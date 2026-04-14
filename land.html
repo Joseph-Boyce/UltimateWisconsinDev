@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Land Management – Ultimate Wisconsin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #fff;
+    --bg-1: #fff;
+    --fg-2: #999;
+    --fg-3: #666;
+    --fg-4: #181925;
+    --gray-1: #f7f7f7;
+    --gray-2: #e0e0e0;
+    --green-1: #effbf2;
+    --green-4: #33c758;
+    --shadow-1: 0px 1px 1px #00000014, 0px 0px 0px 1px #0000000d;
+    --shadow-2: 0px 1px 3px #00000014, 0px 0px 0px 1px #00000005;
+    --shadow-3: 0px 1px 3px #0000000f, 0px 8px 16px #0000000f, 0px 0px 0px 1px #00000005;
+    --shadow-4: 0px 3px 12px #0000000f, 0px 4px 16px #0000000f, 0px 0px 0px 1px #00000008;
+    --r4: .5rem; --r5: .75rem; --r6: 1rem;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── HERO ENTRANCE ANIMATIONS ─────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-badge   { animation: fadeUp .6s var(--ease) both; animation-delay: .05s; }
+  .hero-h1      { animation: fadeUp .7s var(--ease) both; animation-delay: .15s; }
+  .hero-sub     { animation: fadeUp .7s var(--ease) both; animation-delay: .27s; }
+  .hero-actions { animation: fadeUp .7s var(--ease) both; animation-delay: .38s; }
+
+  /* ── SCROLL REVEAL ────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .55s var(--ease), transform .55s var(--ease);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .08s; }
+  .reveal-delay-2 { transition-delay: .16s; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.5; color: var(--fg-3); background: var(--bg);
+    -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; overflow-x: hidden;
+  }
+
+  /* ── NAV ─────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    transition: box-shadow .2s var(--ease);
+  }
+  .nav.scrolled { box-shadow: var(--shadow-2); }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    height: 60px; display: flex; align-items: center;
+    justify-content: space-between; gap: 16px;
+  }
+  .nav-logo {
+    font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em;
+    color: var(--fg-4); text-decoration: none;
+    display: flex; align-items: center; gap: 9px; flex-shrink: 0;
+  }
+  .nav-logo-mark {
+    width: 36px; height: 36px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; overflow: hidden;
+  }
+  .nav-logo-mark img { width: 36px; height: 36px; object-fit: contain; }
+  .nav-links { display: flex; align-items: center; gap: 1px; list-style: none; }
+  .nav-links a {
+    font-size: .82rem; font-weight: 500; color: var(--fg-3);
+    text-decoration: none; padding: 6px 10px; border-radius: 100px;
+    transition: background .15s, color .15s;
+  }
+  .nav-links a:hover { background: var(--gray-1); color: var(--fg-4); }
+  .nav-links a.active { color: var(--fg-4); background: var(--gray-1); font-weight: 600; }
+  .btn-pill {
+    background: var(--fg-4); color: #fff;
+    font-size: .855rem; font-weight: 600; letter-spacing: -.01em;
+    padding: 8px 17px; border-radius: 100px;
+    text-decoration: none; white-space: nowrap;
+    transition: opacity .15s, transform .15s;
+    border: none; cursor: pointer; font-family: inherit;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-pill:hover { opacity: .82; transform: translateY(-1px); }
+  .btn-pill-green { background: var(--green-4); box-shadow: 0 0 0 4px rgba(51,199,88,.18); }
+  .btn-pill-green:hover { opacity: .88; box-shadow: 0 4px 24px rgba(51,199,88,.4); }
+  .menu-toggle {
+    display: none; background: none; cursor: pointer;
+    border: 1px solid var(--gray-2); border-radius: var(--r4);
+    padding: 7px 9px; flex-direction: column; gap: 4px;
+  }
+  .menu-toggle span { display: block; width: 18px; height: 1.5px; background: var(--fg-4); border-radius: 2px; }
+  .mobile-nav {
+    display: none; background: #fff;
+    border-top: 1px solid var(--gray-2); padding: 14px 20px 22px;
+  }
+  .mobile-nav.open { display: block; }
+  .mobile-nav ul { list-style: none; display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
+  .mobile-nav a {
+    display: block; font-size: .9rem; font-weight: 500; color: var(--fg-3);
+    text-decoration: none; padding: 9px 12px; border-radius: var(--r5); transition: background .15s;
+  }
+  .mobile-nav a:hover { background: var(--gray-1); color: var(--fg-4); }
+
+  /* ── HERO ─────────────────────────── */
+  .hero {
+    position: relative; overflow: hidden; background: #0b1f10;
+    padding: 100px 24px 80px; text-align: center;
+  }
+  .hero-art {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% -5%, rgba(34,197,94,.22) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 60% at 85% 55%, rgba(22,101,52,.4) 0%, transparent 60%),
+      linear-gradient(180deg,#091509 0%,#0b1f10 50%,#060f08 100%);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.22);
+    color: #4ade80; font-size: .72rem; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 100px; margin-bottom: 24px;
+  }
+  .hero-h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 800; line-height: 1.08; letter-spacing: -.03em;
+    color: #fff; margin-bottom: 18px;
+  }
+  .hero-sub {
+    font-size: 1.05rem; line-height: 1.7; font-weight: 400;
+    color: rgba(255,255,255,.55); max-width: 500px; margin: 0 auto 36px;
+  }
+  .hero-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .btn-ghost {
+    background: rgba(255,255,255,.07); color: rgba(255,255,255,.8);
+    border: 1px solid rgba(255,255,255,.12);
+    font-size: .9rem; font-weight: 500; padding: 11px 22px;
+    border-radius: 100px; text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,.13); color: #fff; }
+
+  /* ── SECTION BASE ─────────────────── */
+  .section { max-width: 1100px; margin: 0 auto; padding: 96px 24px; }
+  .eyebrow {
+    font-size: .72rem; font-weight: 700; letter-spacing: .11em;
+    text-transform: uppercase; color: var(--green-4); text-align: center; margin-bottom: 10px;
+  }
+  .section-h2 {
+    font-size: clamp(1.75rem, 3.5vw, 2.4rem); font-weight: 800;
+    letter-spacing: -.04em; line-height: 1.13; color: var(--fg-4);
+    text-align: center; margin-bottom: 12px;
+  }
+  .section-sub {
+    font-size: .95rem; line-height: 1.72; color: var(--fg-3);
+    text-align: center; max-width: 500px; margin: 0 auto 56px;
+  }
+
+  /* ── SERVICE CARDS ────────────────── */
+  .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .service-card {
+    background: var(--bg-1); border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.07);
+    box-shadow: var(--shadow-1); overflow: hidden;
+    transition: box-shadow .22s var(--ease), transform .22s var(--ease);
+  }
+  .service-card:hover { box-shadow: var(--shadow-4); transform: translateY(-4px); }
+  .service-img-wrap { width: 100%; aspect-ratio: 4/3; overflow: hidden; }
+  .service-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s var(--ease); }
+  .service-card:hover .service-img { transform: scale(1.04); }
+  .service-body { padding: 14px 16px 18px; }
+  .service-tag {
+    display: inline-block; background: var(--green-1); color: var(--green-4);
+    font-size: .65rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 100px; margin-bottom: 8px;
+    border: 1px solid rgba(51,199,88,.2);
+  }
+  .service-name { font-size: .9rem; font-weight: 700; color: var(--fg-4); margin-bottom: 6px; letter-spacing: -.025em; }
+  .service-desc { font-size: .795rem; line-height: 1.62; color: var(--fg-3); }
+
+  /* ── CONTACT STRIP ────────────────── */
+  .contact-strip {
+    background: var(--fg-4); text-align: center;
+    padding: 80px 24px; position: relative; overflow: hidden;
+  }
+  .contact-strip-glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 65% 85% at 50% 110%, rgba(34,197,94,.18) 0%, transparent 60%);
+  }
+  .contact-strip-inner { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; }
+  .contact-strip-eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #4ade80; margin-bottom: 16px; }
+  .contact-strip-h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -.04em; color: #fff; line-height: 1.1; margin-bottom: 12px; }
+  .contact-strip-p { font-size: .95rem; color: rgba(255,255,255,.5); line-height: 1.72; margin-bottom: 32px; }
+  .contact-strip-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── FOOTER ───────────────────────── */
+  .footer { background: #080f09; border-top: 1px solid rgba(255,255,255,.06); }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 64px 24px 36px; }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px;
+    margin-bottom: 48px; padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+  }
+  .footer-brand-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .footer-logo-mark {
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  }
+  .footer-logo-mark img { width: 32px; height: 32px; object-fit: contain; mix-blend-mode: screen; }
+  .footer-brand-text { font-size: .855rem; font-weight: 700; color: #fff; letter-spacing: -.02em; }
+  .footer-desc { font-size: .79rem; color: rgba(255,255,255,.38); line-height: 1.72; max-width: 255px; margin-bottom: 18px; }
+  .footer-phone {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: .79rem; font-weight: 500; color: rgba(255,255,255,.6);
+    text-decoration: none; border: 1px solid rgba(255,255,255,.13);
+    padding: 6px 13px; border-radius: 100px; transition: all .15s;
+  }
+  .footer-phone:hover { border-color: rgba(255,255,255,.3); color: #fff; }
+  .footer-col-hd { font-size: .64rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.28); margin-bottom: 16px; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .footer-links a, .footer-links span { font-size: .79rem; color: rgba(255,255,255,.48); text-decoration: none; transition: color .15s; line-height: 1.5; display: block; }
+  .footer-links a:hover { color: rgba(255,255,255,.85); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer-copy, .footer-area { font-size: .73rem; color: rgba(255,255,255,.28); }
+
+  @media (max-width: 900px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 640px) {
+    .nav-links, .btn-pill.desktop-only { display: none; }
+    .menu-toggle { display: flex; }
+    .services-grid { grid-template-columns: 1fr !important; }
+    .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    .footer-inner { padding: 48px 20px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────── -->
+<header class="nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-mark">
+        <img src="UltimateWI-logo/UltimateWI-logo.png" alt="Ultimate Wisconsin logo" />
+      </div>
+      Ultimate Wisconsin
+    </a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-links">
+        <li><a href="index.html#services">Landscaping</a></li>
+        <li><a href="junk.html">Junk Removal</a></li>
+        <li><a href="land.html" class="active">Land Management</a></li>
+        <li><a href="rent.html">Equipment Rental</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="apply.html">Apply Today</a></li>
+      </ul>
+    </nav>
+    <a href="https://st.sendajob.com/MY/servicerequest/63f0c5629831c735b53e9ea729cf841e47dbd7fe.html" target="_blank" rel="noopener" class="btn-pill desktop-only">Get a Free Quote</a>
+    <button class="menu-toggle" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav" role="navigation">
+    <ul>
+      <li><a href="index.html#services">Landscaping</a></li>
+      <li><a href="junk.html">Junk Removal</a></li>
+      <li><a href="land.html">Land Management</a></li>
+      <li><a href="rent.html">Equipment Rental</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="apply.html">Apply Today</a></li>
+    </ul>
+    <a href="https://st.sendajob.com/MY/servicerequest/63f0c5629831c735b53e9ea729cf841e47dbd7fe.html" target="_blank" rel="noopener" class="btn-pill btn-pill-green">Get a Free Quote →</a>
+  </div>
+</header>
+
+<!-- ── HERO ──────────────────────────── -->
+<section class="hero">
+  <div class="hero-art"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Commercial &amp; Residential Land Services</div>
+    <h1 class="hero-h1">Ultimate Land Management will take it from here.</h1>
+    <p class="hero-sub">We provide a wide variety of land management services for commercial and residential properties. From removing trees, to full land excavation projects.</p>
+    <div class="hero-actions">
+      <a href="https://st.sendajob.com/MY/servicerequest/63f0c5629831c735b53e9ea729cf841e47dbd7fe.html" target="_blank" rel="noopener" class="btn-pill btn-pill-green">Get a Free Quote →</a>
+      <a href="#services" class="btn-ghost">View Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ───────────────────────── -->
+<section id="services">
+  <div class="section">
+    <p class="eyebrow reveal">What We Do</p>
+    <h2 class="section-h2 reveal">Land management services</h2>
+    <p class="section-sub reveal">From site prep to field mowing, we have the equipment and expertise to handle projects of any size.</p>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-img-wrap">
+          <img
+            src="https://images.squarespace-cdn.com/content/v1/5f0cd1f576b31f5d469b5038/fca867f1-db63-4df9-b714-8c47825392f3/attachments_rootrake_large_1366x768_r4a070986_RGB_72dpi.jpg.jpg"
+            onerror="this.onerror=null;this.src='https://placehold.co/640x480/3d2b1a/ffffff?text=Grading+%2F+Site+Prep'"
+            alt="Grading / Site Prep" class="service-img" />
+        </div>
+        <div class="service-body">
+          <span class="service-tag">Earthwork</span>
+          <div class="service-name">Grading / Site Prep</div>
+          <p class="service-desc">From start to finish, Ultimate will grade, remove all debris and prep the entire site for your project.</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-img-wrap">
+          <img
+            src="https://images.squarespace-cdn.com/content/v1/5f0cd1f576b31f5d469b5038/2d988c9c-b014-4520-abb7-776316697118/JD_E12-cutter.2924.jpg"
+            onerror="this.onerror=null;this.src='https://placehold.co/640x480/2b3d1a/ffffff?text=Land+%2F+Tree+Clearing'"
+            alt="Land / Tree Clearing" class="service-img" />
+        </div>
+        <div class="service-body">
+          <span class="service-tag">Clearing</span>
+          <div class="service-name">Land / Tree Clearing</div>
+          <p class="service-desc">Whether you have minor obstacles or a fully wooded lot, Ultimate will clear the way.</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-img-wrap">
+          <img
+            src="https://images.squarespace-cdn.com/content/v1/5f0cd1f576b31f5d469b5038/8ecb7f54-39cc-41c6-a415-102a8ad9f256/attachments_powerrake_large_1366x768_R4A031723_RGB_72dpi.jpg.jpg"
+            onerror="this.onerror=null;this.src='https://placehold.co/640x480/1a3d2b/ffffff?text=Tilling+%2F+Field+Mowing'"
+            alt="Tilling / Field Mowing" class="service-img" />
+        </div>
+        <div class="service-body">
+          <span class="service-tag">Mowing</span>
+          <div class="service-name">Tilling / Field Mowing</div>
+          <p class="service-desc">From food plots to open fields, we have the equipment to rototill, mow, and remove debris from all sizes of land.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────── -->
+<div class="contact-strip">
+  <div class="contact-strip-glow"></div>
+  <div class="contact-strip-inner">
+    <p class="contact-strip-eyebrow">Start Your Project</p>
+    <h2 class="contact-strip-h2">Ready to clear, grade, or prep your land?</h2>
+    <p class="contact-strip-p">Serving Dane &amp; Oneida Counties. Get a free quote and we'll take it from there.</p>
+    <div class="contact-strip-btns">
+      <a href="https://st.sendajob.com/MY/servicerequest/63f0c5629831c735b53e9ea729cf841e47dbd7fe.html" target="_blank" rel="noopener" class="btn-pill btn-pill-green">Get a Free Quote →</a>
+      <a href="tel:+16084006490" class="btn-pill" style="background:rgba(255,255,255,.12);color:#fff;">(608) 400-6490</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-row">
+          <div class="footer-logo-mark"><img src="UltimateWI-logo-transparent/ultWI-transparent.png" alt="Ultimate Wisconsin" /></div>
+          <span class="footer-brand-text">Ultimate Wisconsin</span>
+        </div>
+        <p class="footer-desc">Land management services for Dane &amp; Oneida Counties, Wisconsin. Grading, clearing, and mowing for any size project.</p>
+        <a href="tel:+16084006490" class="footer-phone">(608) 400-6490</a>
+      </div>
+      <div>
+        <div class="footer-col-hd">Services</div>
+        <ul class="footer-links">
+          <li><a href="#services">Grading / Site Prep</a></li>
+          <li><a href="#services">Land / Tree Clearing</a></li>
+          <li><a href="#services">Tilling / Field Mowing</a></li>
+          <li><a href="index.html#services">Landscaping</a></li>
+          <li><a href="junk.html">Junk Removal</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-hd">Contact</div>
+        <ul class="footer-links">
+          <li><a href="tel:+16084006490">Dane: (608) 400-6490</a></li>
+          <li><a href="tel:+17153377558">Oneida: (715) 337-7558</a></li>
+          <li><a href="mailto:Info@UltimateWI.com">Info@UltimateWI.com</a></li>
+          <li><a href="mailto:Josh@UltimateWI.com">Josh@UltimateWI.com</a></li>
+          <li><span>Deerfield, WI</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 Ultimate Wisconsin. All rights reserved.</span>
+      <span class="footer-area">Serving Dane &amp; Oneida Counties, Wisconsin</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 16); }, { passive: true });
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuBtn.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  // Scroll reveal via IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

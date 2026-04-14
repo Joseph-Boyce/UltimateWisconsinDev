@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apply Now – Ultimate Wisconsin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #fff;
+    --bg-subtle: #fafafa;
+    --bg-1: #fff;
+    --bg-2: #f5f5f5;
+    --bg-3: #f0f0f0;
+    --fg-2: #999;
+    --fg-3: #666;
+    --fg-4: #181925;
+    --gray-1: #f7f7f7;
+    --gray-2: #e0e0e0;
+    --green-1: #effbf2;
+    --green-2: #c2efcd;
+    --green-3: #71da8b;
+    --green-4: #33c758;
+    --shadow-1: 0px 1px 1px #00000014, 0px 0px 0px 1px #0000000d;
+    --shadow-2: 0px 1px 3px #00000014, 0px 0px 0px 1px #00000005;
+    --shadow-3: 0px 1px 3px #0000000f, 0px 8px 16px #0000000f, 0px 0px 0px 1px #00000005;
+    --shadow-4: 0px 3px 12px #0000000f, 0px 4px 16px #0000000f, 0px 0px 0px 1px #00000008;
+    --r4: .5rem; --r5: .75rem; --r6: 1rem;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── HERO ENTRANCE ANIMATIONS ─────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-badge  { animation: fadeUp .6s var(--ease) both; animation-delay: .05s; }
+  .page-hero h1 { animation: fadeUp .7s var(--ease) both; animation-delay: .15s; }
+  .page-hero p  { animation: fadeUp .7s var(--ease) both; animation-delay: .27s; }
+
+  /* ── SCROLL REVEAL ────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .55s var(--ease), transform .55s var(--ease);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .08s; }
+  .reveal-delay-2 { transition-delay: .16s; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.5;
+    color: var(--fg-3);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ──────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    transition: box-shadow .2s var(--ease);
+  }
+  .nav.scrolled { box-shadow: var(--shadow-2); }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    height: 60px; display: flex; align-items: center;
+    justify-content: space-between; gap: 16px;
+  }
+  .nav-logo {
+    font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em;
+    color: var(--fg-4); text-decoration: none;
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .nav-logo-mark {
+    width: 36px; height: 36px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; overflow: hidden;
+  }
+  .nav-logo-mark img { width: 36px; height: 36px; object-fit: contain; }
+  .nav-links { display: flex; align-items: center; gap: 1px; list-style: none; }
+  .nav-links a {
+    font-size: .82rem; font-weight: 500; color: var(--fg-3);
+    text-decoration: none; padding: 6px 10px; border-radius: 100px;
+    transition: background .15s, color .15s;
+  }
+  .nav-links a:hover { background: var(--gray-1); color: var(--fg-4); }
+  .btn-pill {
+    background: var(--fg-4); color: #fff;
+    font-size: .855rem; font-weight: 600; letter-spacing: -.01em;
+    padding: 8px 17px; border-radius: 100px;
+    text-decoration: none; white-space: nowrap;
+    transition: opacity .15s, transform .15s;
+    border: none; cursor: pointer; font-family: inherit;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-pill:hover { opacity: .82; transform: translateY(-1px); }
+  .btn-pill-green {
+    background: var(--green-4);
+    box-shadow: 0 0 0 4px rgba(51,199,88,.18);
+  }
+  .btn-pill-green:hover { opacity: .88; box-shadow: 0 4px 24px rgba(51,199,88,.4); }
+
+  .menu-toggle {
+    display: none; background: none; cursor: pointer;
+    border: 1px solid var(--gray-2); border-radius: var(--r4);
+    padding: 7px 9px; flex-direction: column; gap: 4px;
+  }
+  .menu-toggle span { display: block; width: 18px; height: 1.5px; background: var(--fg-4); border-radius: 2px; }
+  .mobile-nav {
+    display: none; background: #fff;
+    border-top: 1px solid var(--gray-2); padding: 14px 20px 22px;
+  }
+  .mobile-nav.open { display: block; }
+  .mobile-nav ul { list-style: none; display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
+  .mobile-nav a {
+    display: block; font-size: .9rem; font-weight: 500;
+    color: var(--fg-3); text-decoration: none;
+    padding: 9px 12px; border-radius: var(--r5); transition: background .15s;
+  }
+  .mobile-nav a:hover { background: var(--gray-1); color: var(--fg-4); }
+
+  /* ── PAGE HERO ─────────────────────────── */
+  .page-hero {
+    position: relative; overflow: hidden;
+    background: #0b1f10;
+    padding: 72px 24px 64px;
+    text-align: center;
+  }
+  .page-hero-art {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(34,197,94,.20) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 55% at 10% 60%, rgba(22,101,52,.40) 0%, transparent 60%),
+      linear-gradient(180deg,#091509 0%,#0b1f10 50%,#060f08 100%);
+  }
+  .page-hero-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.22);
+    color: #4ade80; font-size: .72rem; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 100px; margin-bottom: 24px;
+  }
+  .page-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800; line-height: 1.08; letter-spacing: -.04em;
+    color: #fff; margin-bottom: 16px;
+  }
+  .page-hero p {
+    font-size: 1rem; line-height: 1.7; font-weight: 400;
+    color: rgba(255,255,255,.55); margin-bottom: 0;
+  }
+
+  /* ── PERKS STRIP ───────────────────────── */
+  .perks-strip {
+    background: var(--gray-1);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+  .perks-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+  }
+  .perk-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 28px 28px;
+    border-right: 1px solid rgba(0,0,0,.06);
+  }
+  .perk-item:last-child { border-right: none; }
+  .perk-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+  .perk-title { font-size: .855rem; font-weight: 600; color: var(--fg-4); margin-bottom: 3px; }
+  .perk-desc { font-size: .79rem; color: var(--fg-2); line-height: 1.6; }
+
+  /* ── FORM SECTION ──────────────────────── */
+  .form-section {
+    max-width: 860px; margin: 0 auto;
+    padding: 64px 24px 80px;
+  }
+  .form-intro {
+    text-align: center; margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-size: .64rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--green-4);
+    margin-bottom: 10px;
+  }
+  .form-intro h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800;
+    letter-spacing: -.035em; color: var(--fg-4); margin-bottom: 12px;
+  }
+  .form-intro p {
+    font-size: .95rem; color: var(--fg-3); line-height: 1.7; max-width: 520px; margin: 0 auto;
+  }
+
+  .form-embed-wrap {
+    background: #fff;
+    border: 1px solid var(--gray-2);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-3);
+  }
+  .form-embed-wrap iframe {
+    display: block;
+    width: 100%;
+    min-height: 1100px;
+    border: none;
+  }
+
+  /* ── FOOTER ───────────────────────────── */
+  .footer { background: #080f09; border-top: 1px solid rgba(255,255,255,.06); }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 64px 24px 36px; }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px;
+    margin-bottom: 48px; padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+  }
+  .footer-brand-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .footer-logo-mark {
+    width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  }
+  .footer-logo-mark img { width: 34px; height: 34px; object-fit: contain; mix-blend-mode: screen; }
+  .footer-brand-text { font-size: .855rem; font-weight: 700; color: #fff; letter-spacing: -.02em; }
+  .footer-desc { font-size: .79rem; color: rgba(255,255,255,.38); line-height: 1.72; max-width: 255px; margin-bottom: 18px; }
+  .footer-phone {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: .79rem; font-weight: 500; color: rgba(255,255,255,.6);
+    text-decoration: none; border: 1px solid rgba(255,255,255,.13);
+    padding: 6px 13px; border-radius: 100px; transition: all .15s;
+  }
+  .footer-phone:hover { border-color: rgba(255,255,255,.3); color: #fff; }
+  .footer-col-hd { font-size: .64rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.28); margin-bottom: 16px; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .footer-links a, .footer-links span { font-size: .79rem; color: rgba(255,255,255,.48); text-decoration: none; transition: color .15s; line-height: 1.5; display: block; }
+  .footer-links a:hover { color: rgba(255,255,255,.85); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer-copy, .footer-area { font-size: .73rem; color: rgba(255,255,255,.28); }
+
+  /* ── RESPONSIVE ───────────────────────── */
+  @media (max-width: 900px) {
+    .perks-grid { grid-template-columns: 1fr; }
+    .perk-item { border-right: none; border-bottom: 1px solid rgba(0,0,0,.06); }
+    .perk-item:last-child { border-bottom: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+  }
+  @media (max-width: 640px) {
+    .nav-links, .btn-pill.desktop-only { display: none; }
+    .menu-toggle { display: flex; }
+    .page-hero { padding: 56px 20px 48px; }
+    .form-section { padding: 48px 16px 60px; }
+    .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+    .footer-inner { padding: 48px 20px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────── -->
+<header class="nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-mark"><img src="UltimateWI-logo/UltimateWI-logo.png" alt="Ultimate Wisconsin logo" /></div>
+      Ultimate Wisconsin
+    </a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-links">
+        <li><a href="index.html#services">Landscaping</a></li>
+        <li><a href="junk.html">Junk Removal</a></li>
+        <li><a href="land.html">Land Management</a></li>
+        <li><a href="rent.html">Equipment Rental</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="apply.html" class="active">Apply Today</a></li>
+      </ul>
+    </nav>
+    <a href="https://st.sendajob.com/MY/servicerequest/63f0c5629831c735b53e9ea729cf841e47dbd7fe.html"
+       target="_blank" rel="noopener" class="btn-pill desktop-only">Get a Free Quote</a>
+    <button class="menu-toggle" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav" role="navigation">
+    <ul>
+      <li><a href="index.html#services">Landscaping</a></li>
+      <li><a href="junk.html">Junk Removal</a></li>
+      <li><a href="land.html">Land Management</a></li>
+      <li><a href="rent.html">Equipment Rental</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="apply.html">Apply Today</a></li>
+    </ul>
+    <a href="https://st.sendajob.com/MY/servicerequest/63f0c5629831c735b53e9ea729cf841e47dbd7fe.html"
+       target="_blank" rel="noopener" class="btn-pill btn-pill-green">Get a Free Quote →</a>
+  </div>
+</header>
+
+<!-- ── PAGE HERO ─────────────────────────── -->
+<section class="page-hero">
+  <div class="page-hero-art"></div>
+  <div class="page-hero-inner">
+    <div class="hero-badge">🌱 Now Hiring · Join the Team</div>
+    <h1>Apply Now</h1>
+    <p>We're looking for hardworking, dependable people to join the Ultimate Wisconsin crew. Fill out the application below and we'll be in touch.</p>
+  </div>
+</section>
+
+<!-- ── PERKS STRIP ───────────────────────── -->
+<div class="perks-strip">
+  <div class="perks-grid">
+    <div class="perk-item reveal">
+      <div class="perk-icon">💵</div>
+      <div>
+        <div class="perk-title">Competitive Pay</div>
+        <div class="perk-desc">We pay well and reward hard work. Consistent hours and reliable paychecks every week.</div>
+      </div>
+    </div>
+    <div class="perk-item reveal reveal-delay-1">
+      <div class="perk-icon">📍</div>
+      <div>
+        <div class="perk-title">Local Work, Close to Home</div>
+        <div class="perk-desc">All jobs are in Dane &amp; Crawford Counties with no long commutes or overnight travel.</div>
+      </div>
+    </div>
+    <div class="perk-item reveal reveal-delay-2">
+      <div class="perk-icon">🤝</div>
+      <div>
+        <div class="perk-title">Team-First Culture</div>
+        <div class="perk-desc">Work alongside a tight-knit crew that shows up for each other, season after season.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FORM ──────────────────────────────── -->
+<div class="form-section">
+  <div class="form-intro reveal">
+    <p class="eyebrow">Application</p>
+    <h2>Tell us about yourself</h2>
+    <p>Complete the short form below. Most applicants hear back within 1–2 business days.</p>
+  </div>
+  <div class="form-embed-wrap reveal">
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSe_MJF1ycuowbQ9mJ6dZ7V_RPVlNTVyCofkoMppvE6KIqh_4A/viewform?embedded=true"
+      title="Ultimate Wisconsin Job Application"
+      loading="lazy"
+    >Loading application form…</iframe>
+  </div>
+</div>
+
+<!-- ── FOOTER ────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-row">
+          <div class="footer-logo-mark"><img src="UltimateWI-logo-transparent/ultWI-transparent.png" alt="Ultimate Wisconsin" /></div>
+          <span class="footer-brand-text">Ultimate Wisconsin</span>
+        </div>
+        <p class="footer-desc">Professional lawn and landscape services for Dane &amp; Crawford Counties, Wisconsin. Quality work, dependable service, every time.</p>
+        <a href="tel:+16088482100" class="footer-phone">📞 (608) 848-2100</a>
+      </div>
+      <div>
+        <div class="footer-col-hd">Services</div>
+        <ul class="footer-links">
+          <li><a href="index.html#services">Mowing</a></li>
+          <li><a href="index.html#services">Concrete</a></li>
+          <li><a href="index.html#services">Retaining Walls</a></li>
+          <li><a href="index.html#services">Landscape Design</a></li>
+          <li><a href="index.html#services">Tree Trimming</a></li>
+          <li><a href="index.html#services">Snow Removal</a></li>
+          <li><a href="index.html#services">Pressure Washing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-hd">Contact</div>
+        <ul class="footer-links">
+          <li><a href="tel:+16088482100">(608) 848-2100</a></li>
+          <li><a href="mailto:info@ultimatewisconsin.com">info@ultimatewisconsin.com</a></li>
+          <li><a href="index.html">ultimatewisconsin.com</a></li>
+          <li><span>Dane &amp; Crawford Counties<br>Wisconsin</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 Ultimate Wisconsin. All rights reserved.</span>
+      <span class="footer-area">Serving Dane &amp; Crawford Counties, Wisconsin</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 16);
+  }, { passive: true });
+
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuBtn.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+
+  mobileNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  // Scroll reveal via IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

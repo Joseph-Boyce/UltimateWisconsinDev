@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Edit(*)",
+      "Write(*)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(jq -r '.tool_input.file_path // .tool_response.filePath // empty' 2>/dev/null); if echo \"$file\" | grep -qE '\\.html$'; then \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --screenshot=\"$(dirname \"$file\")/screenshot.png\" --window-size=1440,900 --virtual-time-budget=2000 \"file://$file\" 2>/dev/null; fi",
+            "statusMessage": "Screenshotting..."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+# Screenshots
+out*.png
+
+# macOS
+.DS_Store
+
