@@ -810,7 +810,7 @@
   <div class="nav-inner">
     <a href="#" class="nav-logo">
       <div class="nav-logo-mark">
-        <img src="../assets/images/logo/UltimateWI-logo.png" alt="Ultimate Wisconsin logo" />
+        <img src="assets/images/logo/UltimateWI-logo.png" alt="Ultimate Wisconsin logo" />
       </div>
       Ultimate Wisconsin
     </a>
@@ -1470,7 +1470,7 @@
       <div>
         <div class="footer-brand-row">
           <div class="footer-logo-mark">
-            <img src="../assets/images/logo/ultWI-transparent.png" alt="Ultimate Wisconsin" />
+            <img src="assets/images/logo/ultWI-transparent.png" alt="Ultimate Wisconsin" />
           </div>
           <span class="footer-brand-text">Ultimate Wisconsin</span>
         </div>
@@ -1704,7 +1704,7 @@
     // Preload all frames; draw first frame immediately when it arrives
     for (let i = 1; i <= TOTAL; i++) {
       const img = new Image();
-      img.src = `../assets/frames/frame${pad(i)}.jpg`;
+      img.src = `assets/frames/frame${pad(i)}.jpg`;
       img.onload = () => {
         loaded++;
         if (i === 1) { drawFrame(0); tick(); } // start loop on first frame
