@@ -1,5 +1,5 @@
 # Screenshots
-out*.png
+assets/images/screenshots/
 
 # macOS
 .DS_Store

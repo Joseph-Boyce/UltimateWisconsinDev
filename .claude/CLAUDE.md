@@ -8,4 +8,4 @@ Website design recreation from reference screenshots, output as a single `index.
 
 ## Ultimate Wisconsin Logo
 
-Always use the logo in the `UltimateWisconsinDev/UltimateWI-logo` folder. 
+Always use the logos in `assets/images/logo/`.
