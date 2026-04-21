@@ -196,7 +196,7 @@
 
   /* ── FORM SECTION ──────────────────────── */
   .form-section {
-    max-width: 860px; margin: 0 auto;
+    max-width: 960px; margin: 0 auto;
     padding: 64px 24px 80px;
   }
   .form-intro {
@@ -267,9 +267,11 @@
     .perk-item:last-child { border-bottom: none; }
     .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
   }
-  @media (max-width: 640px) {
+  @media (max-width: 960px) {
     .nav-links, .btn-pill.desktop-only { display: none; }
     .menu-toggle { display: flex; }
+  }
+  @media (max-width: 640px) {
     .page-hero { padding: 56px 20px 48px; }
     .form-section { padding: 48px 16px 60px; }
     .footer-top { grid-template-columns: 1fr; gap: 28px; }
